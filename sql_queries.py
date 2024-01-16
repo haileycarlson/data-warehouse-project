@@ -10,7 +10,7 @@ config.read('dwh.cfg')
 LOG_DATA='s3://udacity-dend/log-data'
 LOG_JSONPATH='s3://udacity-dend/log_json_path.json'
 SONG_DATA='s3://udacity-dend/song-data/A/A/A'
-DWH_ROLE_ARN ='arn:aws:iam::030727218447:role/dwhRole'
+DWH_ROLE_ARN =''
 
 # DROP TABLES
 
