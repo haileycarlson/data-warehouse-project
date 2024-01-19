@@ -6,11 +6,6 @@ import configparser
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
-#S3
-LOG_DATA='s3://udacity-dend/log-data'
-LOG_JSONPATH='s3://udacity-dend/log_json_path.json'
-SONG_DATA='s3://udacity-dend/song-data/A/A/A'
-DWH_ROLE_ARN ='arn:aws:iam::030727218447:role/dwhRole'
 
 # DROP TABLES
 
@@ -39,26 +34,26 @@ CREATE TABLE staging_events
     method              TEXT,
     page                VARCHAR(20),
     registration        BIGINT,
-    session_id          INT,
+    session_id          INT            NOT NULL,
     song_title          VARCHAR(250),
     status              INT,
-    ts                  BIGINT,
+    ts                  BIGINT         NOT NULL,
     user_agent          VARCHAR(150),
-    user_id             INT
+    user_id             INT            NOT NULL
 );
 """)
 
 staging_songs_table_create = ("""
 CREATE TABLE staging_songs
 (
-    artist_id           VARCHAR(25)   PRIMARY KEY,
+    artist_id           VARCHAR(25)    NOT NULL    PRIMARY KEY,
     artist_latitude     DECIMAL(5),
     artist_location     VARCHAR(300),
     artist_longitude    DECIMAL(5),
     artist_name         VARCHAR(300),
     duration            DECIMAL(5),
     num_songs           INT,
-    song_id             VARCHAR(30),
+    song_id             VARCHAR(30)    NOT NULL,
     title               VARCHAR(200),
     year                INT
 );
@@ -67,13 +62,13 @@ CREATE TABLE staging_songs
 songplay_table_create = ("""
 CREATE TABLE songplay_data
 (
-    songplay_id        INT           PRIMARY KEY,
+    songplay_id        IDENTITY         NOT NULL    PRIMARY KEY,
     start_time         TIMESTAMP,
     user_id            INT,
     level              TEXT,
     song_id            VARCHAR(30),
-    artist_id          VARCHAR(25),
-    session_id         INT,
+    artist_id          VARCHAR(25)      NOT NULL,
+    session_id         INT              NOT NULL,
     location           VARCHAR(200),
     user_agent         VARCHAR(150)
 );
@@ -82,29 +77,29 @@ CREATE TABLE songplay_data
 user_table_create = ("""
 CREATE TABLE user_data
 (
-    user_id            INT            PRIMARY KEY,
-    first_name         TEXT,
-    last_name          TEXT,
-    gender             TEXT,
-    level              TEXT
+    user_id            INT      NOT NULL    PRIMARY KEY,
+    first_name         TEXT     NOT NULL,
+    last_name          TEXT     NOT NULL,
+    gender             TEXT     NOT NULL,
+    level              TEXT     NOT NULL
 );
 """)
 
 song_table_create = ("""
 CREATE TABLE song_data
 (
-   song_id             VARCHAR(30)            PRIMARY KEY,
-   title               VARCHAR(200),
-   artist_id           VARCHAR(25),
-   year                INT,
-   duration            DECIMAL
+   song_id             VARCHAR(30)      NOT NULL     PRIMARY KEY,
+   title               VARCHAR(200)     NOT NULL,
+   artist_id           VARCHAR(25)      NOT NULL,
+   year                INT              NOT NULL,
+   duration            DECIMAL          NOT NULL
 ); 
 """)
 
 artist_table_create = ("""
 CREATE TABLE artist_data
 (
-   artist_id           VARCHAR(25)            PRIMARY KEY,
+   artist_id           VARCHAR(25)      NOT NULL     PRIMARY KEY,
    name                VARCHAR(100),
    location            VARCHAR(200),
    latitude            DECIMAL,
@@ -115,7 +110,7 @@ CREATE TABLE artist_data
 time_table_create = ("""
 CREATE TABLE time_data
 (
-    start_time         TIMESTAMP      PRIMARY KEY,
+    start_time         TIMESTAMP     NOT NULL    PRIMARY KEY,
     hour               INT,
     day                TEXT,
     week               TEXT,
